@@ -54,6 +54,10 @@ impl InstructionNumber {
     pub const MAX: Self = Self { raw: c_ll::MAX };
     pub const ZERO: Self = Self { raw: 0 };
 
+    pub fn as_raw(&self) -> c_ll {
+        self.raw
+    }
+
     #[must_use]
     pub fn mul_f64(&self, rhs: f64) -> Self {
         Self::new((self.raw as f64 * rhs) as i64)
