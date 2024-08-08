@@ -19,7 +19,7 @@ dependencies = [
 
 [[package]]
 name = "cpu-instructions-reader"
-version = "1.2.0"
+version = "0.1.0"
 dependencies = [
  "cc",
  "derive_more",
