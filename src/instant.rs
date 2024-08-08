@@ -2,35 +2,35 @@ use std::ops::Sub;
 
 use libc::c_int;
 
-use crate::{Cycles, Error, Result};
+use crate::{InstructionNumber, Error, Result};
 
 #[derive(Debug, Clone, Copy)]
-pub struct CyclesInstant {
+pub struct InstructionNumberInstant {
     cpu: c_int,
-    raw: Cycles,
+    raw: InstructionNumber,
 }
 
-impl CyclesInstant {
-    pub(crate) const fn new(cpu: c_int, raw: Cycles) -> Self {
+impl InstructionNumberInstant {
+    pub(crate) const fn new(cpu: c_int, raw: InstructionNumber) -> Self {
         Self { cpu, raw }
     }
 
-    /// Calculate the number of cpu cycles between two recordings
+    /// Calculate the number of cpu instruction number between two recordings
     ///
     /// # Panics
     ///
     /// If the two records are not the same cpu, an error will be returned.
     #[must_use]
-    pub fn cycles_since(&self, other: Self) -> Cycles {
-        self.cycles_since_checked(other).unwrap()
+    pub fn instruction_number_since(&self, other: Self) -> InstructionNumber {
+        self.instruction_number_since_checked(other).unwrap()
     }
 
-    /// Calculate the number of cpu cycles between two recordings
+    /// Calculate the number of cpu instruction number number between two recordings
     ///
     /// # Errors
     ///
     /// If the two records are not the same cpu, an error will be returned
-    pub fn cycles_since_checked(&self, other: Self) -> Result<Cycles> {
+    pub fn instruction_number_since_checked(&self, other: Self) -> Result<InstructionNumber> {
         if self.cpu == other.cpu {
             Ok(self.raw - other.raw)
         } else {
@@ -39,10 +39,10 @@ impl CyclesInstant {
     }
 }
 
-impl Sub for CyclesInstant {
-    type Output = Cycles;
+impl Sub for InstructionNumberInstant {
+    type Output = InstructionNumber;
 
     fn sub(self, other: Self) -> Self::Output {
-        self.cycles_since(other)
+        self.instruction_number_since(other)
     }
 }

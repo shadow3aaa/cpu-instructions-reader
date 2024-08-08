@@ -15,15 +15,15 @@ static int perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu,
     return ret;
 }
 
-struct CyclesReader
+struct InstructionNumberReader
 {
     size_t size;
     int *cpus; // fd
 };
 
-struct CyclesReader *createCyclesReader(const int *Cpus, size_t numCpus, pid_t pid)
+struct InstructionNumberReader *createInstructionNumberReader(const int *Cpus, size_t numCpus, pid_t pid)
 {
-    struct CyclesReader *reader = malloc(sizeof(struct CyclesReader));
+    struct InstructionNumberReader *reader = malloc(sizeof(struct InstructionNumberReader));
     if (reader == NULL)
     {
         return NULL;
@@ -34,7 +34,7 @@ struct CyclesReader *createCyclesReader(const int *Cpus, size_t numCpus, pid_t p
     memset(&pe, 0, sizeof(struct perf_event_attr));
     pe.type = PERF_TYPE_HARDWARE;
     pe.size = sizeof(struct perf_event_attr);
-    pe.config = PERF_COUNT_HW_CPU_CYCLES;
+    pe.config = PERF_COUNT_HW_INSTRUCTIONS;
     pe.disabled = 1;
 
     // Create perf events
@@ -67,7 +67,7 @@ struct CyclesReader *createCyclesReader(const int *Cpus, size_t numCpus, pid_t p
     return reader;
 }
 
-void destroyCyclesReader(struct CyclesReader *reader)
+void destroyInstructionNumberReader(struct InstructionNumberReader *reader)
 {
     if (reader == NULL)
     {
@@ -84,7 +84,7 @@ void destroyCyclesReader(struct CyclesReader *reader)
     reader = NULL;
 }
 
-void enableCyclesReader(struct CyclesReader *reader)
+void enableInstructionNumberReader(struct InstructionNumberReader *reader)
 {
     for (size_t i = 0; i < reader->size; i++)
     {
@@ -94,7 +94,7 @@ void enableCyclesReader(struct CyclesReader *reader)
     }
 }
 
-void disableCyclesReader(struct CyclesReader *reader)
+void disableInstructionNumberReader(struct InstructionNumberReader *reader)
 {
     if (reader->cpus == NULL)
         return;
@@ -103,11 +103,11 @@ void disableCyclesReader(struct CyclesReader *reader)
         ioctl(reader->cpus[i], PERF_EVENT_IOC_DISABLE, 0);
 }
 
-long long readCyclesReader(struct CyclesReader *reader, int Cpu)
+long long readInstructionNumberReader(struct InstructionNumberReader *reader, int Cpu)
 {
-    long long cycles = 0;
-    if (read(reader->cpus[Cpu], &cycles, sizeof(long long)) == -1)
+    long long instructions = 0;
+    if (read(reader->cpus[Cpu], &instructions, sizeof(long long)) == -1)
         return -1;
     else
-        return cycles;
+        return instructions;
 }

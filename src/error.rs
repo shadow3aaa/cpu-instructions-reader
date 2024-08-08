@@ -8,10 +8,10 @@ pub type Result<T> = result::Result<T, Error>;
 pub enum Error {
     #[error("TryFromIntError")]
     TryFromIntError(#[from] TryFromIntError),
-    #[error("Failed to create cycles reader")]
+    #[error("Failed to create reader")]
     FailedToCreate,
-    #[error("Failed to read cpu cycles")]
+    #[error("Failed to read cpu instruction number")]
     FailedToRead,
-    #[error("Cpu cores of CyclesInstant are inconsistent and cannot be subtracted")]
+    #[error("Cpu core of InstructionNumberInstant are inconsistent and cannot be subtracted")]
     InconsistentCore,
 }

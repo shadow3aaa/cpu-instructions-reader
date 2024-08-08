@@ -1,18 +1,18 @@
 [package]
-name = "cpu_cycles_reader"
+name = "cpu-instructions-reader"
 version = "1.2.0"
 edition = "2021"
-description = "perf_event_read package specialized for reading cpu cycles"
-repository = "https://github.com/shadow3aaa/cpu-cycles-reader"
+description = "perf_event_read package specialized for reading cpu hw instructions"
+repository = "https://github.com/shadow3aaa/cpu-instructions-reader"
 license = "WTFPL"
 readme = "README.md"
-keywords = ["cpu", "cycles", "linux", "ffi-bind"]
+keywords = ["cpu", "linux", "ffi-bind"]
 categories = ["api-bindings"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-derive_more = "0.99.18"
+derive_more = { version = "1.0.0", features = ["full"]}
 libc = "0.2.155"
 num_cpus = "1.16.0"
 thiserror = "1.0.63"
