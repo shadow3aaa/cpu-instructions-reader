@@ -13,9 +13,9 @@ categories = ["api-bindings"]
 
 [dependencies]
 derive_more = { version = "1.0.0", features = ["full"]}
-libc = "0.2.155"
+libc = "0.2.158"
 num_cpus = "1.16.0"
 thiserror = "1.0.63"
 
 [build-dependencies]
-cc = "1.1.7"
+cc = "1.1.21"
