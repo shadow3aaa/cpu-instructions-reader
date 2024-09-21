@@ -1,6 +1,6 @@
 [package]
 name = "cpu-instructions-reader"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "perf_event_read package specialized for reading cpu hw instructions"
 repository = "https://github.com/shadow3aaa/cpu-instructions-reader"
