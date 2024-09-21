@@ -19,19 +19,19 @@
 #![warn(clippy::nursery, clippy::cargo)]
 #![allow(clippy::missing_panics_doc, clippy::module_name_repetitions)]
 #![cfg(any(target_os = "linux", target_os = "android"))]
-mod instruction_number;
 mod error;
 pub mod ffi;
 mod instant;
+mod instruction_number;
 
 use std::ptr;
 
 use ffi::InstructionNumberReaderRaw;
 use libc::{c_int, pid_t};
 
-pub use instruction_number::InstructionNumber;
 pub use error::{Error, Result};
 pub use instant::InstructionNumberInstant;
+pub use instruction_number::InstructionNumber;
 
 #[derive(Debug)]
 pub struct InstructionNumberReader {
@@ -59,15 +59,14 @@ impl InstructionNumberReader {
         let cpus: Vec<_> = (0..cpus).collect();
         let cpus_ptr = cpus.as_ptr();
 
-        let raw_ptr = unsafe {
-            let ptr = ffi::createInstructionNumberReader(cpus_ptr, cpus.len(), pid.unwrap_or(-1));
-            ffi::enableInstructionNumberReader(ptr);
-            ptr
-        };
+        let raw_ptr =
+            unsafe { ffi::createInstructionNumberReader(cpus_ptr, cpus.len(), pid.unwrap_or(-1)) };
 
         if raw_ptr.is_null() {
             return Err(Error::FailedToCreate);
         }
+
+        unsafe { ffi::enableInstructionNumberReader(raw_ptr) };
 
         Ok(Self { raw_ptr })
     }
